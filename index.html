@@ -1,33 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Document type and language set to English -->
+
   <meta charset="UTF-8">
+  <!-- Ensures proper character encoding (supports all letters and symbols) -->
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Makes the page responsive on mobile devices -->
+
   <title>GoatCare App</title>
+  <!-- Page title shown in the browser tab -->
+
   <link rel="stylesheet" href="style.css">
+  <!-- Links to external CSS file for styling -->
 </head>
+
 <body>
+  <!-- Main page content starts here -->
+
   <header>
-<h1>🐐 GoatCare App </h1>  
-<p> Helping farmers manage goat & feeding</p>
-</header>
-<main>
-<section>
-<h2> Enter Goat Details</h2>
-<form id="goatForm">
-  <label for="breed"> Goat Breed</label>
-  <input type="text" id="breed" placeholder="Beetal , teddi, Dera Din Panah,Kamori, Barbari, Kaghani, Pothowari,Nachi, Chapper " required>
- <label for="age"> Goat Age(months):</label>
- <input type="number" id="age" required>
- <button type="submit"> Get Feeding Plan</button>
-</form>
-</section>
-<secton id="result">
-    <!-- Feeding results will show here -->
-</secton>
+    <!-- Header section: App name and tagline -->
+    <h1>🐐 GoatCare App</h1>
+    <p>Helping farmers manage goat & feeding</p>
+  </header>
 
-</main>
+  <main>
+    <!-- Main content area -->
 
+    <section>
+      <!-- Section for entering goat details -->
+      <h2>Enter Goat Details</h2>
+
+      <!-- Goat information form -->
+      <form id="goatForm">
+        <!-- Breed input -->
+        <label for="breed">Goat Breed</label>
+        <input 
+          type="text" 
+          id="breed" 
+          placeholder="Beetal, Teddi, Dera Din Panah, Kamori, Barbari, Kaghani, Pothowari, Nachi, Chapper" 
+          required
+        >
+
+        <!-- Age input -->
+        <label for="age">Goat Age (months):</label>
+        <input 
+          type="number" 
+          id="age" 
+          required
+        >
+
+        <!-- Weight input -->
+        <label for="weight">Weight (kg):</label>
+        <input 
+          type="number" 
+          id="weight" 
+          required
+        >
+
+        <!-- Submit button -->
+        <button type="submit">Get Feeding Plan</button>
+      </form>
+    </section>
+
+    <!-- Section to display results (filled by JavaScript) -->
+    <section id="result">
+      <!-- Feeding results will be shown here by JavaScript -->
+    </section>
+
+  </main>
+
+  <!-- Link to external JavaScript file -->
   <script src="index.js"></script>
+
 </body>
 </html>

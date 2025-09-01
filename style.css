@@ -1,20 +1,47 @@
-body{
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background: #f9f9f9 ;
+/* Set basic styles for the entire page */
+body {
+  font-family: Arial, sans-serif;     /* Use clean, readable font */
+  margin: 20px;                       /* Add space around the page content */
+  background: #f9f9f9;                /* Light gray background for a soft look */
 }
-header{
-  text-align: center;
-  margin-bottom: 20px;
+
+/* Style the header section */
+header {
+  text-align: center;                 /* Center the header text */
+  margin-bottom: 20px;                /* Add space below the header */
 }
-form{
-  display:flex;
-  flex-direction: column;
-  gap:10px;
-  max-width: 300px;
-  margin:auto;
-  padding: 15px;
-  background: white;
-  border-radius: 8px;
-  box-shadow:0px 4px 6px rgba(0,0,0,0.1) ;
+
+/* Style the goat information form */
+form {
+  display: flex;                      /* Use flexbox for layout */
+  flex-direction: column;             /* Stack form elements vertically */
+  gap: 10px;                          /* Add 10px space between each input */
+  max-width: 300px;                   /* Limit form width for small screens */
+  margin: auto;                       /* Center the form horizontally */
+  padding: 15px;                      /* Add inner spacing inside the form */
+  background: white;                  /* White background for contrast */
+  border-radius: 8px;                 /* Rounded corners for a modern look */
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1); /* Subtle shadow to lift form off page */
+}
+
+/* Style the submit button */
+button {
+  background: green;                  /* Green background */
+  color: white;                       /* White text */
+  padding: 10px;                      /* Add padding for a larger, clickable button */
+  border: none;                       /* Remove default border */
+  border-radius: 6px;                 /* Slightly rounded corners */
+  cursor: pointer;                    /* Show hand cursor on hover */
+}
+
+/* Change button color when user hovers over it */
+button:hover {
+  background: darkgreen;              /* Darker green on hover for feedback */
+}
+
+/* Style the result display area */
+#result {
+  margin-top: 20px;                   /* Space above the result */
+  text-align: center;                 /* Center the result text */
+  font-weight: bold;                  /* Make result text bold */
 }
