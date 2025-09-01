@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoatCare App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+<h1>🐐 GoatCare App </h1>  
+<p> Helping farmers manage goat & feeding</p>
+</header>
+<main>
+<section>
+<h2> Enter Goat Details</h2>
+<form id="goatForm">
+  <label for="breed"> Goat Breed</label>
+  <input type="text" id="breed" placeholder="Beetal , teddi, Dera Din Panah,Kamori, Barbari, Kaghani, Pothowari,Nachi, Chapper " required>
+ <label for="age"> Goat Age(months):</label>
+ <input type="number" id="age" required>
+ <button type="submit"> Get Feeding Plan</button>
+</form>
+</section>
+<secton id="result">
+    <!-- Feeding results will show here -->
+</secton>
+
+</main>
+
+  <script src="index.js"></script>
+</body>
+</html>
