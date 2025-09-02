@@ -83,8 +83,8 @@ function breedAdjustMix(breed,mixkg){
 function splitByRecipe(mixName,totalkg){
   const recipe = MIXES[mixName];
   const out = {};
-  Object.entries(recipe).forEach(([K,r])=>{
-    out [LABELS[k]||k]=(totalkg*r).toFixed(3)+ "kg/day";
+  Object.entries(recipe).forEach(([k,r])=>{
+    out [LABELS[k] || k] = (totalkg*r).toFixed(3)+ "kg/day";
   }); 
   return out;
 }
