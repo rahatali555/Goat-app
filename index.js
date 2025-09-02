@@ -58,3 +58,20 @@ const LABELS={
   molasses: "Molasses - Sheera",
   mineral_salt: "Mineral Mix + Namak"
 };
+// Breed groups
+const LARGE=["Beetal","Kamori","Dera Din Panah","DDP"];
+const SMALL=["Barbari","Khagani"];
+function pickMix(ageMonths,purposeHint){
+  if (purposeHint==="lactation") return "lactation";
+  if (purposeHint === "fattening") return "fattening";
+  return ageMonths <= 12 ? "grower" : "lactation"; // default
+}
+function baseAmount(ageMonths,weight){
+  if(ageMonths<=1)return {green:0.2, dry:0,mix:0};
+  if(ageMonths<=3) return{green:0.8,dry:0,mix:0.12};
+  if (ageMonths<=6) return{green:Math.max(1,weight*0.02+1), dry:0.3,mix:0.2
+  };
+  if(ageMonths<=12) return{ green:weight*0.08,dry:weight*0.018, mix:weight*0.007};
+    return {green: weight * 0.10, dry: weight * 0.025, mix: weight * 0.010};
+
+}
