@@ -88,3 +88,24 @@ function splitByRecipe(mixName,totalkg){
   }); 
   return out;
 }
+function getFeedingPlan({breed, ageMonths,weight,purpose}){
+  const stage = baseAmount(ageMonths, weight);
+  let mixName = pickMix(ageMonths, purpose);
+  let totalMix =breedAdjustMix(breed,stage.mix);
+   
+  if (purpose==="lactation") totalMix = Math.max(totalMix,weight*0.012);
+   if (purpose === "fattening") totalMix = Math.max(totalMix, weight * 0.015);
+   const ingredients = splitByRecipe(mixName,totalMix);
+    return {
+    Breed: breed,
+    Age_Months: ageMonths,
+    Weight_Kg: weight,
+    Purpose: purpose || (ageMonths <= 12 ? "Grower (Naujawan Bacha)" : "Maintenance (Doodh/Goat Rakna)"),
+    "Green Fodder (Hara Chara)": stage.green.toFixed(2) + " kg/day (Berseem, Lucerne, Jowar, Bajra, Makai Hara)",
+    "Dry Fodder (Sookha Chara)": stage.dry.toFixed(2) + " kg/day (Bhusa, Parali, Sookha Makai)",
+    "Total Mix (Khal/Chokar Dana)": totalMix.toFixed(2) + " kg/day",
+    "Ingredients (Bilingual)": ingredients,
+    Water: (weight * 0.1).toFixed(1) + " liter/day (Pani)"
+  };
+}
+console.log(getFeedingPlan({breed: "Beetal", ageMonths: 8, weight: 35}));
