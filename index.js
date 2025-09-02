@@ -47,3 +47,14 @@ fattening:{
      mineral_salt: 0.02
 }
 };
+// Labels in English + Roman Urdu
+const LABELS={
+  wheat_bran: "Wheat Bran - Chokar",
+  crushed_maize: "Crushed Maize - Makai Dana",
+  cottonseed_cake: "Cottonseed Cake - Khal Binola",
+  rice_polish: "Rice Polish - Chawal Chokar",
+  oilseed_cake: "Oilseed Cake - Sarson Khal / Binola Khal",
+  chickpea_broken: "Chickpea Broken - Chana Churi/  chaney ka dalia",
+  molasses: "Molasses - Sheera",
+  mineral_salt: "Mineral Mix + Namak"
+};
