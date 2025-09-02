@@ -25,7 +25,7 @@ document.getElementById("goatForm").addEventListener("submit", function(event) {
 // Local mix recipes (ratios must sum to 1)
 const MIXES={
 grower:{
-  wheat_Bran:0.40, //Chokar
+  wheat_bran:0.40, //Chokar
   crushed_maize:0.30,//Makai Dana
   cottonseed_cake:0.20, // Khal Binola(or sarsun khal / Chana Chiri)
   rice_polish:0.08,// chawal Chokar
@@ -74,4 +74,17 @@ function baseAmount(ageMonths,weight){
   if(ageMonths<=12) return{ green:weight*0.08,dry:weight*0.018, mix:weight*0.007};
     return {green: weight * 0.10, dry: weight * 0.025, mix: weight * 0.010};
 
+}
+function breedAdjustMix(breed,mixkg){
+  if(LARGE.includes(breed)) return mixkg*1.2;
+  if(SMALL.includes(breed)) return mixkg*0.8;
+  return mixkg;
+}
+function splitByRecipe(mixName,totalkg){
+  const recipe = MIXES[mixName];
+  const out = {};
+  Object.entries(recipe).forEach(([K,r])=>{
+    out [LABELS[k]||k]=(totalkg*r).toFixed(3)+ "kg/day";
+  }); 
+  return out;
 }
