@@ -3,31 +3,34 @@
 // Local mix recipes (ratios must sum to 1)
 const MIXES={
 grower:{
-  wheat_bran:0.40, //Chokar
+  wheat_Bran:0.40, //Chokar
   crushed_maize:0.30,//Makai Dana
   cottonseed_cake:0.20, // Khal Binola(or sarsun khal / Chana Chiri)
   rice_polish:0.08,// chawal Chokar
-  mineral_salt:0.02 //~ 1.5% mineral + 0.5% salt
+  mineral_salt:0.02, //~ 1.5% mineral + 0.5% salt
+    chickpea_Broken: 0.10  // Chana Churi/Daliya  (≈10%)
 }
 ,
 lactation:{
-wheat_bran: 0.30,
+wheat_Bran: 0.30,
 crushed_maize:0.25,  
 oilseed_cake: 0.35,   // Sarson Khal / Binola Khal
 rice_polish: 0.08,
-mineral_salt: 0.02
+mineral_salt: 0.02,
+chickpea_Broken: 0.10   // start at 10%, can move to 12–15% if needed
 },
 fattening:{
     crushed_maize: 0.45,
-    wheat_bran: 0.25,
+    wheat_Bran: 0.25,
     oilseed_cake: 0.25,
     molasses:0.03, // Sheera (optional)
-     mineral_salt: 0.02
+     mineral_salt: 0.02,
+      chickpea_Broken: 0.08,   // 8% in finishing ration
 }
 };
 // Labels in English + Roman Urdu
 const LABELS={
-  wheat_bran: "Wheat Bran - Chokar",
+  wheat_Bran: "Wheat Bran - Chokar",
   crushed_maize: "Crushed Maize - Makai Dana",
   cottonseed_cake: "Cottonseed Cake - Khal Binola",
   rice_polish: "Rice Polish - Chawal Chokar",
@@ -58,14 +61,20 @@ function breedAdjustMix(breed,mixkg){
   if(SMALL.includes(breed)) return mixkg*0.8;
   return mixkg;
 }
-function splitByRecipe(mixName,totalkg){
+function splitByRecipe(mixName, totalkg) {
   const recipe = MIXES[mixName];
   const out = {};
-  Object.entries(recipe).forEach(([k,r])=>{
-    out [LABELS[k] || k] = (totalkg*r).toFixed(3)+ "kg/day";
-  }); 
+  Object.entries(recipe).forEach(([k, r]) => {
+    const kg = totalkg * r;
+    const grams = kg * 1000;
+    out[LABELS[k] || k] = {
+      kg: kg.toFixed(3),   // keep 3 decimals for kg
+      g: grams.toFixed(0)  // round grams
+    };
+  });
   return out;
 }
+
 function getFeedingPlan({breed, ageMonths,weight,purpose}){
   const stage = baseAmount(ageMonths, weight);
   let mixName = pickMix(ageMonths, purpose);
@@ -79,19 +88,27 @@ function getFeedingPlan({breed, ageMonths,weight,purpose}){
     Age_Months: ageMonths,
     Weight_Kg: weight,
     Purpose: purpose || (ageMonths <= 12 ? "Grower (Naujawan Bacha)" : "Maintenance (Doodh/Goat Rakna)"),
-    "Green Fodder (Hara Chara)": stage.green.toFixed(2) + " kg/day (Berseem, Lucerne, Jowar, Bajra, Makai Hara)",
-    "Dry Fodder (Sookha Chara)": stage.dry.toFixed(2) + " kg/day (Bhusa, Parali, Sookha Makai)",
-    "Total Mix (Khal/Chokar Dana)": totalMix.toFixed(2) + " kg/day",
+   "Green Fodder (Hara Chara)":
+      (stage.green * 1000).toFixed(0) + " g/day (Berseem, Lucerne, Jowar, Bajra, Makai Hara)",
+    "Dry Fodder (Sookha Chara)":
+      (stage.dry * 1000).toFixed(0) + " g/day (Bhusa, Parali, Sookha Makai)",
+    "Total Mix (Khal/Chokar Dana)":
+      (totalMix * 1000).toFixed(0) + " g/day",
     "Ingredients (Bilingual)": ingredients,
-    Water: (weight * 0.1).toFixed(1) + " liter/day (Pani)"
+    Water:
+      (weight * 0.1).toFixed(1) +
+      " liter/day (Pani)" // weight*0.1 liters = weight*100 ml
   };
 }
 
 // ---------------- NOW FORM SUBMIT ----------------
 document.getElementById("goatForm").addEventListener("submit", function(event) {
   event.preventDefault();
+  
+  const breed = document.getElementById("breed").value.trim(); 
   const age = parseFloat(document.getElementById("age").value);
   const weight = parseFloat(document.getElementById("weight").value);
+  const purpose = document.getElementById("purpose").value;
     // Get feeding plan object
     const plan = getFeedingPlan({
       breed,
@@ -103,18 +120,15 @@ document.getElementById("goatForm").addEventListener("submit", function(event) {
   // Build ingredient list
   let ingredientsList ="";
   for (const[item,qty] of Object.entries(plan["Ingredients (Bilingual)"])){
-     // Convert kg → grams
-       const numberQty = parseFloat(qty);
-  const grams = (numberQty * 1000).toFixed(0); // round to nearest gram
-  ingredientsList += `<li><strong>${grams} g/day</strong> - ${item}</li>`;
-}
+     
+  ingredientsList += `<li><strong>${qty.kg} kg/day (${qty.g} g/day)</strong> - ${item}</li>`; }
 document.getElementById("planContent").innerHTML = `<ul>${ingredientsList}</ul>`;
 // Build HTML card content
 const html= `
 <p><b>Breed:</b>${plan.Breed}</p>
 <p><b>Age:</b>${plan.Age_Months} months</p>
 <p><b>Weight:</b>${plan.Weight_Kg} kg</p>
-<p><b>Purpose:</b>${plan.purpose}</p>
+<p><b>purpose:</b>${plan.purpose}</p>
 <p><b>🌿 Green Fodder:</b> ${plan["Green Fodder (Hara Chara)"]}</p>
     <p><b>🌾 Dry Fodder:</b> ${plan["Dry Fodder (Sookha Chara)"]}</p>
     <p><b>🥣 Total Mix:</b> ${plan["Total Mix (Khal/Chokar Dana)"]}</p>
