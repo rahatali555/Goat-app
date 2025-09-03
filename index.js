@@ -1,27 +1,5 @@
 
-// Wait for the form with id "goatForm" to be submitted
-document.getElementById("goatForm").addEventListener("submit", function(event) {
-  
-  // Prevent the page from reloading when the form is submitted
-  event.preventDefault();
 
-  // Get the value entered by the user in the "breed" input field
-  const breed = document.getElementById("breed").value;
-
-  // Get the value entered by the user in the "age" input field
-  const age = document.getElementById("age").value;
-
-  // Get the value entered by the user in the "weight" input field
-  const weight = document.getElementById("weight").value;
-
-  // Display the collected goat information in the "result" element on the page
-  document.getElementById("result").innerHTML = `
-    <p>Goat Breed: ${breed}</p>
-    <p>Age: ${age} months</p>
-    <p>Weight: ${weight} kg</p>
-    <p>📋 Feeding plan will be calculated here!</p>
-  `;
-});
 // Local mix recipes (ratios must sum to 1)
 const MIXES={
 grower:{
@@ -108,4 +86,22 @@ function getFeedingPlan({breed, ageMonths,weight,purpose}){
     Water: (weight * 0.1).toFixed(1) + " liter/day (Pani)"
   };
 }
-console.log(getFeedingPlan({breed: "Beetal", ageMonths: 8, weight: 35}));
+
+// ---------------- NOW FORM SUBMIT ----------------
+document.getElementById("goatForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const age = parseFloat(document.getElementById("age").value);
+  const weight = parseFloat(document.getElementById("weight").value);
+    // Get feeding plan object
+    const plan = getFeedingPlan({
+      breed,
+      ageMonths:age,
+      weight,
+      purpose:""  // later you can add dropdown for lactation/fattening
+    });
+    
+  // Build ingredient list
+  let ingredientsList ="";
+  for (const[item,qty] of Object.entries(plan["Ingredients (Bilingual)"])){
+    ingredientsList += `<li>${qty}</strong> - ${item}</li>`;
+  }
