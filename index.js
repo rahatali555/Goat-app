@@ -105,3 +105,23 @@ document.getElementById("goatForm").addEventListener("submit", function(event) {
   for (const[item,qty] of Object.entries(plan["Ingredients (Bilingual)"])){
     ingredientsList += `<li>${qty}</strong> - ${item}</li>`;
   }
+// Build HTML card content
+const html= `
+<p><b>Breed:</b>${plan.Breed}</p>
+<p><b>Age:</b>${plan.Age_Months} months</p>
+<p><b>Weight:</b>${plan.Weight_Kg} kg</p>
+<p><b>Purpose:</b>${plan.purpose}</p>
+<p><b>🌿 Green Fodder:</b> ${plan["Green Fodder (Hara Chara)"]}</p>
+    <p><b>🌾 Dry Fodder:</b> ${plan["Dry Fodder (Sookha Chara)"]}</p>
+    <p><b>🥣 Total Mix:</b> ${plan["Total Mix (Khal/Chokar Dana)"]}</p>
+    <p><b>💧 Water:</b> ${plan.Water}</p>
+    <h3>⚖️ Ingredients</h3>
+    <ul>${ingredientsList}</ul>
+`;
+// Show in card
+  const card = document.getElementById("planCard");
+  const content = document.getElementById("planContent");
+
+  card.style.display = "block";
+  content.innerHTML = html;
+});
