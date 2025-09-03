@@ -103,8 +103,12 @@ document.getElementById("goatForm").addEventListener("submit", function(event) {
   // Build ingredient list
   let ingredientsList ="";
   for (const[item,qty] of Object.entries(plan["Ingredients (Bilingual)"])){
-    ingredientsList += `<li>${qty}</strong> - ${item}</li>`;
-  }
+     // Convert kg → grams
+       const numberQty = parseFloat(qty);
+  const grams = (numberQty * 1000).toFixed(0); // round to nearest gram
+  ingredientsList += `<li><strong>${grams} g/day</strong> - ${item}</li>`;
+}
+document.getElementById("planContent").innerHTML = `<ul>${ingredientsList}</ul>`;
 // Build HTML card content
 const html= `
 <p><b>Breed:</b>${plan.Breed}</p>
