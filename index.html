@@ -36,12 +36,18 @@
       <form id="goatForm">
         <!-- Breed input -->
         <label for="breed">Goat Breed</label>
-        <input 
-          type="text" 
-          id="breed" 
-          placeholder="Beetal, Teddi, Dera Din Panah, Kamori, Barbari, Kaghani, Pothowari, Nachi, Chapper" 
-          required
-        >
+       <select id="breed" required>
+        <option>Beetal</option>
+        <option>Teddi</option>
+        <option>Dera Din Panah</option>
+        <option>Kamori</option>
+        <option>Barbari</option>
+        <option>Kaghani</option>
+        <option>Pothowari</option>
+        <option>Nachi</option>
+        <option>Chapper</option>
+
+       </select>
 
         <!-- Age input -->
         <label for="age">Goat Age (months):</label>
@@ -58,6 +64,13 @@
           id="weight" 
           required
         >
+        <label for="purpose">purpose</label>
+        <select id="purpose">
+          <option value="grower">Grower</option>
+          <option value="lactation">Lactation</option>
+          <option value="fattening">Fattening</option>
+
+        </select>
 
         <!-- Submit button -->
         <button type="submit">Get Feeding Plan</button>
