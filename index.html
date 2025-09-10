@@ -37,8 +37,10 @@
       <!-- Goat information form -->
       <form id="goatForm" class="space-y-4">
         <!-- Breed input -->
-        <label for="breed">Goat Breed</label>
-       <select id="breed" required>
+        <label for="breed" class="block font-medium text-gray-700">Goat Breed</label>
+       <select id="breed" required 
+       class="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+       >
         <option>Beetal</option>
         <option>Teddi</option>
         <option>Dera Din Panah</option>
@@ -52,22 +54,24 @@
        </select>
 
         <!-- Age input -->
-        <label for="age">Goat Age (months):</label>
+        <label for="age" class="block font-medium text-gray-700">Goat Age (months):</label>
         <input 
           type="number" 
           id="age" 
           required
+          class="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
         >
 
         <!-- Weight input -->
-        <label for="weight">Weight (kg):</label>
+        <label for="weight" class="block font-medium text-gray-700">Weight (kg):</label>
         <input 
           type="number" 
           id="weight" 
           required
+          class="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-        <label for="purpose">purpose</label>
-        <select id="purpose">
+        <label for="purpose" class="block font-medium text-gray-700">purpose</label>
+        <select id="purpose" class="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
           <option value="grower">Grower</option>
           <option value="lactation">Lactation</option>
           <option value="fattening">Fattening</option>
@@ -75,7 +79,7 @@
         </select>
 
         <!-- Submit button -->
-        <button type="submit">Get Feeding Plan</button>
+        <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition">Get Feeding Plan</button>
       </form>
     </section>
 
