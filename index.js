@@ -125,16 +125,40 @@ document.getElementById("goatForm").addEventListener("submit", function(event) {
 document.getElementById("planContent").innerHTML = `<ul>${ingredientsList}</ul>`;
 // Build HTML card content
 const html= `
-<p><b>Breed:</b>${plan.Breed}</p>
-<p><b>Age:</b>${plan.Age_Months} months</p>
-<p><b>Weight:</b>${plan.Weight_Kg} kg</p>
-<p><b>purpose:</b>${plan.purpose}</p>
-<p><b>🌿 Green Fodder:</b> ${plan["Green Fodder (Hara Chara)"]}</p>
-    <p><b>🌾 Dry Fodder:</b> ${plan["Dry Fodder (Sookha Chara)"]}</p>
-    <p><b>🥣 Total Mix:</b> ${plan["Total Mix (Khal/Chokar Dana)"]}</p>
-    <p><b>💧 Water:</b> ${plan.Water}</p>
-    <h3>⚖️ Ingredients</h3>
-    <ul>${ingredientsList}</ul>
+<div class="space-y-4">
+    <!-- Goat Info -->
+    <div class="bg-green-50 p-4 rounded-lg">
+      <h3 class="font-bold text-green-700 mb-2">🐐 Goat Info</h3>
+      <p><b>Breed:</b> ${plan.Breed}</p>
+      <p><b>Age:</b> ${plan.Age_Months} months</p>
+      <p><b>Weight:</b> ${plan.Weight_Kg} kg</p>
+      <p><b>Purpose:</b> ${plan.Purpose}</p>
+    </div>
+
+    <!-- Feeding Summary -->
+    <div class="grid grid-cols-2 gap-4 text-center">
+      <div class="p-3 bg-green-100 rounded-lg">
+        🌿 <b>${plan["Green Fodder (Hara Chara)"]}</b>
+      </div>
+      <div class="p-3 bg-yellow-100 rounded-lg">
+        🌾 <b>${plan["Dry Fodder (Sookha Chara)"]}</b>
+      </div>
+      <div class="p-3 bg-blue-100 rounded-lg col-span-2">
+        🥣 <b>${plan["Total Mix (Khal/Chokar Dana)"]}</b>
+      </div>
+      <div class="p-3 bg-cyan-100 rounded-lg col-span-2">
+        💧 <b>${plan.Water}</b>
+      </div>
+    </div>
+
+    <!-- Ingredients -->
+    <div>
+      <h3 class="font-bold text-green-700 mb-2">⚖️ Ingredients</h3>
+      <ul class="list-disc pl-5 space-y-1 text-gray-700">
+        ${ingredientsList}
+      </ul>
+    </div>
+  </div>
 `;
 // Show in card
   const card = document.getElementById("planCard");
