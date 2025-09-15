@@ -12,6 +12,8 @@
   <title>GoatCare App</title>
   <!-- Page title shown in the browser tab -->
    <script src="https://cdn.tailwindcss.com"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 
 
   <link rel="stylesheet" href="style.css">
@@ -72,6 +74,25 @@
           required
           class="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
         >
+        <!-- Sex input -->
+<label for="sex">Sex</label>
+<select id="sex" required>
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+</select>
+
+<!-- Pregnant checkbox (only matters for female) -->
+<label>
+  <input type="checkbox" id="pregnant"> Pregnant
+</label>
+
+<!-- Lactating checkbox (only matters for female) -->
+<label>
+  <input type="checkbox" id="lactating"> Lactating
+</label>
+
+         
+        
         <label for="purpose" class="block font-medium text-gray-700">purpose</label>
         <select id="purpose" class="w-full border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
           <option value="grower">Grower</option>
