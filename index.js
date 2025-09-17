@@ -195,3 +195,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (content) content.innerHTML = html;
   });
 });
+// ---------- PDF Download ----------
+document.addEventListener("DOMContentLoaded",()=>{
+  const downloadBtn = document.getElementById("downloadPdf");
+  if (downloadBtn){
+    downloadBtn.addEventListener("click", ()=>{
+      const { jsPDF} = window.jspdf;
+      const doc= new jsPDF();
+      //Grab plan content (text only)
+      const content = document.getElementById("planContent")?.innerText|| "NO plan available";
+      doc.setFont("helvetica","normal");
+      doc.setFontSize(12);
+      //Title
+      doc.text("GoatCare Feeding Plan 🐐", 10, 10);
+      // Content
+      doc.text(content,10,20);
+      //Save
+      doc.save("goat-feeding-plan.pdf")
+    })
+  }
+})
