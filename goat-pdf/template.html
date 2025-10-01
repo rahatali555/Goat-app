@@ -4,16 +4,38 @@
   <meta charset="UTF-8">
   <title>Feeding Plan</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h1 { color: green; }
-    .section { margin-bottom: 20px; }
-    .label { font-weight: bold; }
-    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: green;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body>
   <h1>🐐 Goat Feeding Plan</h1>
 
+  <!-- Goat Info -->
   <div class="section">
     <p><span class="label">Breed:</span> {{Breed}}</p>
     <p><span class="label">Age (months):</span> {{Age_Months}}</p>
@@ -22,8 +44,11 @@
     <p><span class="label">Sex:</span> {{sex}}</p>
     <p><span class="label">Pregnant:</span> {{pregnant}}</p>
     <p><span class="label">Lactating:</span> {{lactating}}</p>
+    <p><span class="label">🥛 Milk:</span> {{Milk}}</p>
+
   </div>
 
+  <!-- Feeding Plan -->
   <div class="section">
     <p><span class="label">🌿 Green Fodder:</span> {{GreenFodder}}</p>
     <p><span class="label">🌾 Dry Fodder:</span> {{DryFodder}}</p>
@@ -31,6 +56,7 @@
     <p><span class="label">💧 Water:</span> {{Water}}</p>
   </div>
 
+  <!-- Ingredients -->
   <div class="section">
     <h3>⚖️ Ingredients</h3>
     <pre>{{Ingredients}}</pre>

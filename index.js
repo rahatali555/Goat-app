@@ -1,3 +1,4 @@
+// ---------- Event Listener for PDF Download ----------
 document.getElementById("downloadPdf").addEventListener("click", async () => {
   const formData = {
     breed: document.getElementById("breed").value,
@@ -11,16 +12,17 @@ document.getElementById("downloadPdf").addEventListener("click", async () => {
 
   // ✅ Generate full feeding plan
   const plan = getFeedingPlan(formData);
-
-  //conso;e for check
   console.log("🐐 Full Feeding Plan:", plan);
 
   // ✅ Flatten Ingredients into simple string
   let ingredientsText = "";
-  for (const [name, qty] of Object.entries(plan["Ingredients (Bilingual)"])) {
-    ingredientsText += `${name}: ${qty.kg} kg (${qty.g} g)\n`;
+  if (plan["Ingredients (Bilingual)"]) {
+    for (const [name, qty] of Object.entries(plan["Ingredients (Bilingual)"])) {
+      ingredientsText += `${name}: ${qty.kg} kg (${qty.g} g)\n`;
+    }
   }
-console.log("⚖️ Ingredients Text:", ingredientsText);
+  console.log("⚖️ Ingredients Text:", ingredientsText);
+
   // ✅ Create final pdfData
   const pdfData = {
     Breed: plan.Breed,
@@ -37,56 +39,53 @@ console.log("⚖️ Ingredients Text:", ingredientsText);
     Ingredients: ingredientsText
   };
 
+  console.log("📤 Sending PDF Data:", pdfData);
 
-
-console.log("📤 Sending PDF Data:", pdfData);
-
-  // ✅ Send this pdfData instead
+  // ✅ Send PDF request to server
   const response = await fetch("http://localhost:4000/generate-pdf", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(pdfData)  // <--- send pdfData not formData
+    body: JSON.stringify(pdfData)
   });
 
   if (!response.ok) {
     alert("Error generating PDF");
     return;
   }
-// ✅ Put the blob download code here
-const blob = await response.blob();
-const url = URL.createObjectURL(blob);
-const a = document.createElement("a");
-a.href = url;
-a.download = "feeding-plan.pdf";
-a.click();
-URL.revokeObjectURL(url);
 
+  // ✅ Download PDF blob
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "feeding-plan.pdf";
+  a.click();
+  URL.revokeObjectURL(url);
 });
 
-
-// ---------- your original data (unchanged) ----------
+// ---------- Data ----------
 const MIXES = {
-  grower:{
-    wheat_Bran:0.40,
-    crushed_maize:0.30,
-    cottonseed_cake:0.20,
-    rice_polish:0.08,
-    mineral_salt:0.02,
+  grower: {
+    wheat_Bran: 0.40,
+    crushed_maize: 0.30,
+    cottonseed_cake: 0.20,
+    rice_polish: 0.08,
+    mineral_salt: 0.02,
     chickpea_Broken: 0.10
   },
-  lactation:{
+  lactation: {
     wheat_Bran: 0.30,
-    crushed_maize:0.25,
+    crushed_maize: 0.25,
     oilseed_cake: 0.35,
     rice_polish: 0.08,
     mineral_salt: 0.02,
     chickpea_Broken: 0.10
   },
-  fattening:{
+  fattening: {
     crushed_maize: 0.45,
     wheat_Bran: 0.25,
     oilseed_cake: 0.25,
-    molasses:0.03,
+    molasses: 0.03,
     mineral_salt: 0.02,
     chickpea_Broken: 0.08
   }
@@ -103,44 +102,42 @@ const LABELS = {
   mineral_salt: "Madni Ajza + Namak"
 };
 
-const LARGE=["Beetal","Kamori","Dera Din Panah","DDP"];
-const SMALL=["Barbari","Khagani"];
+const LARGE = ["Beetal", "Kamori", "Dera Din Panah", "DDP"];
+const SMALL = ["Barbari", "Khagani"];
 
-// ---------- helper: normalize recipe so ratios sum to 1 ----------
-function normalizeRecipe(recipe){
-  const total = Object.values(recipe).reduce((s,v) => s + v, 0);
-  if (Math.abs(total - 1) < 1e-6) return recipe; // already normalized
+// ---------- Helpers ----------
+function normalizeRecipe(recipe) {
+  const total = Object.values(recipe).reduce((s, v) => s + v, 0);
+  if (Math.abs(total - 1) < 1e-6) return recipe;
   const normalized = {};
-  Object.entries(recipe).forEach(([k,v]) => {
+  Object.entries(recipe).forEach(([k, v]) => {
     normalized[k] = v / total;
   });
   console.warn(`Normalized ${JSON.stringify(Object.keys(recipe))} (sum was ${total.toFixed(3)})`);
   return normalized;
 }
 
-// pickMix: made case-insensitive and accepts some variants
-function pickMix(ageMonths, purposeHint){
+function pickMix(ageMonths, purposeHint) {
   const hint = (purposeHint || "").toString().toLowerCase();
   if (hint === "lactation" || hint === "lactating") return "lactation";
   if (hint === "fattening") return "fattening";
   return ageMonths <= 12 ? "grower" : "lactation";
 }
 
-function baseAmount(ageMonths,weight){
-  if(ageMonths<=1) return {green:0.2, dry:0, mix:0};
-  if(ageMonths<=3) return {green:0.8, dry:0, mix:0.12};
-  if(ageMonths<=6) return {green: Math.max(1, weight*0.02 + 1), dry:0.3, mix:0.2};
-  if(ageMonths<=12) return {green: weight*0.08, dry: weight*0.018, mix: weight*0.007};
-  return {green: weight * 0.10, dry: weight * 0.025, mix: weight * 0.010};
+function baseAmount(ageMonths, weight) {
+  if (ageMonths <= 1) return { green: 0.2, dry: 0, mix: 0 };
+  if (ageMonths <= 3) return { green: 0.8, dry: 0, mix: 0.12 };
+  if (ageMonths <= 6) return { green: Math.max(1, weight * 0.02 + 1), dry: 0.3, mix: 0.2 };
+  if (ageMonths <= 12) return { green: weight * 0.08, dry: weight * 0.018, mix: weight * 0.007 };
+  return { green: weight * 0.10, dry: weight * 0.025, mix: weight * 0.010 };
 }
 
-function breedAdjustMix(breed, mixkg){
+function breedAdjustMix(breed, mixkg) {
   if (LARGE.includes(breed)) return mixkg * 1.2;
   if (SMALL.includes(breed)) return mixkg * 0.8;
   return mixkg;
 }
 
-// splitByRecipe now uses normalized ratios
 function splitByRecipe(mixName, totalkg) {
   const rawRecipe = MIXES[mixName];
   if (!rawRecipe) throw new Error(`Unknown mix: ${mixName}`);
@@ -158,14 +155,13 @@ function splitByRecipe(mixName, totalkg) {
   return out;
 }
 
-function getFeedingPlan({breed, ageMonths, weight, purpose, sex, pregnant, lactating}){
+function getFeedingPlan({ breed, ageMonths, weight, purpose, sex, pregnant, lactating }) {
   const stage = baseAmount(ageMonths, weight);
   const mixName = pickMix(ageMonths, purpose);
   let totalMix = breedAdjustMix(breed, stage.mix);
 
   if ((purpose || "").toString().toLowerCase() === "lactation") totalMix = Math.max(totalMix, weight * 0.012);
   if ((purpose || "").toString().toLowerCase() === "fattening") totalMix = Math.max(totalMix, weight * 0.015);
-
   if (sex === "female" && pregnant) totalMix *= 1.2;
   if (sex === "female" && lactating) totalMix *= 1.3;
 
@@ -176,9 +172,9 @@ function getFeedingPlan({breed, ageMonths, weight, purpose, sex, pregnant, lacta
     Age_Months: ageMonths,
     Weight_Kg: weight,
     Purpose: purpose || (ageMonths <= 12 ? "Grower (Naujawan Bacha)" : "Maintenance (Doodh/Goat Rakna)"),
-    sex: sex,
-    pregnant: pregnant,
-    lactating: lactating,
+    sex,
+    pregnant,
+    lactating,
     "Green Fodder (Hara Chara)": (stage.green * 1000).toFixed(0) + " g/day (Berseem, Lucerne, Jowar, Bajra, Makai Hara)",
     "Dry Fodder (Sookha Chara)": (stage.dry * 1000).toFixed(0) + " g/day (Bhusa, Parali, Sookha Makai)",
     "Total Mix (Khal/Chokar Dana)": (totalMix * 1000).toFixed(0) + " g/day",
@@ -187,7 +183,7 @@ function getFeedingPlan({breed, ageMonths, weight, purpose, sex, pregnant, lacta
   };
 }
 
-// ---------- DOM-safe setup: wait for DOM ----------
+// ---------- DOM Setup ----------
 document.addEventListener("DOMContentLoaded", () => {
   const goatForm = document.getElementById("goatForm");
   if (!goatForm) {
@@ -211,15 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const plan = getFeedingPlan({
-      breed,
-      ageMonths: age,
-      weight,
-      purpose,
-      sex,
-      pregnant,
-      lactating
-    });
+    const plan = getFeedingPlan({ breed, ageMonths: age, weight, purpose, sex, pregnant, lactating });
 
     let ingredientsList = "";
     for (const [item, qty] of Object.entries(plan["Ingredients (Bilingual)"])) {
@@ -255,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // ✅ update UI here
+    // Update UI
     const card = document.getElementById("planCard");
     const content = document.getElementById("planContent");
     const downloadBtn = document.getElementById("downloadPdf");
@@ -265,6 +253,3 @@ document.addEventListener("DOMContentLoaded", () => {
     if (downloadBtn) downloadBtn.removeAttribute("hidden");
   });
 });
-
-
-
