@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feeding Plan</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: green; }
+    .section { margin-bottom: 20px; }
+    .label { font-weight: bold; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>🐐 Goat Feeding Plan</h1>
+
+  <div class="section">
+    <p><span class="label">Breed:</span> {{Breed}}</p>
+    <p><span class="label">Age (months):</span> {{Age_Months}}</p>
+    <p><span class="label">Weight (kg):</span> {{Weight_Kg}}</p>
+    <p><span class="label">Purpose:</span> {{Purpose}}</p>
+    <p><span class="label">Sex:</span> {{sex}}</p>
+    <p><span class="label">Pregnant:</span> {{pregnant}}</p>
+    <p><span class="label">Lactating:</span> {{lactating}}</p>
+  </div>
+
+  <div class="section">
+    <p><span class="label">🌿 Green Fodder:</span> {{GreenFodder}}</p>
+    <p><span class="label">🌾 Dry Fodder:</span> {{DryFodder}}</p>
+    <p><span class="label">🥣 Total Mix:</span> {{TotalMix}}</p>
+    <p><span class="label">💧 Water:</span> {{Water}}</p>
+  </div>
+
+  <div class="section">
+    <h3>⚖️ Ingredients</h3>
+    <pre>{{Ingredients}}</pre>
+  </div>
+</body>
+</html>

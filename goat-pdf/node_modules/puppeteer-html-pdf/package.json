@@ -1,0 +1,53 @@
+{
+  "name": "puppeteer-html-pdf",
+  "version": "4.0.8",
+  "description": "HTML to PDF converter for Node.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "example": "examples",
+    "test": "tests",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ultimateakash/puppeteer-html-pdf.git"
+  },
+  "keywords": [
+    "pdf",
+    "puppeteer",
+    "htmlPDF",
+    "htmltopdf",
+    "html-pdf",
+    "node-html-pdf",
+    "html-pdf-node",
+    "puppeteer-html-pdf",
+    "puppeteer-pdf",
+    "pdf-puppeteer",
+    "puppeteer-node.js",
+    "puppeteer-node",
+    "node-puppeteer"
+  ],
+  "author": "UltimateAkash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ultimateakash/puppeteer-html-pdf/issues"
+  },
+  "homepage": "https://github.com/ultimateakash/puppeteer-html-pdf#readme",
+  "dependencies": {
+    "puppeteer": "^22.7.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.js"
+    ],
+    "testTimeout": 10000
+  }
+}

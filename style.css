@@ -1,10 +1,22 @@
 /* Set basic styles for the entire page */
 body {
-  font-family: Arial, sans-serif;     /* Use clean, readable font */
+    /* Use clean, readable font */
   margin: 20px;                       /* Add space around the page content */
   background: #f9f9f9;                /* Light gray background for a soft look */
 }
+body[dir="rtl"], .urdu {
+  direction: rtl;
+  text-align: right;
+}
+/* === Font embedding for Urdu === */
+@font-face {
+  font-family: 'NotoSans';
+  src: url('fonts/NotoSans-Regular.ttf') format('truetype');
+}
 
+body, #planCard, #planCard * {
+  font-family: 'NotoSans', 'Noto Sans', sans-serif !important;
+}
 /* Style the header section */
 header {
   text-align: center;                 /* Center the header text */
@@ -83,4 +95,10 @@ button:hover {
 /* Each ingredient item */
 #planCard li {
   margin-bottom: 5px;         /* Small gap between items */
+}
+.ingredients { 
+  background: #f4f4f4; 
+  padding: 10px; 
+  border-radius: 5px; 
+  line-height: 1.6; 
 }

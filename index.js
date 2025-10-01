@@ -1,3 +1,69 @@
+document.getElementById("downloadPdf").addEventListener("click", async () => {
+  const formData = {
+    breed: document.getElementById("breed").value,
+    ageMonths: parseFloat(document.getElementById("age").value),
+    weight: parseFloat(document.getElementById("weight").value),
+    purpose: document.getElementById("purpose").value,
+    sex: document.getElementById("sex").value,
+    pregnant: document.getElementById("pregnant").checked,
+    lactating: document.getElementById("lactating").checked
+  };
+
+  // ✅ Generate full feeding plan
+  const plan = getFeedingPlan(formData);
+
+  //conso;e for check
+  console.log("🐐 Full Feeding Plan:", plan);
+
+  // ✅ Flatten Ingredients into simple string
+  let ingredientsText = "";
+  for (const [name, qty] of Object.entries(plan["Ingredients (Bilingual)"])) {
+    ingredientsText += `${name}: ${qty.kg} kg (${qty.g} g)\n`;
+  }
+console.log("⚖️ Ingredients Text:", ingredientsText);
+  // ✅ Create final pdfData
+  const pdfData = {
+    Breed: plan.Breed,
+    Age_Months: plan.Age_Months,
+    Weight_Kg: plan.Weight_Kg,
+    Purpose: plan.Purpose,
+    sex: plan.sex,
+    pregnant: plan.pregnant ? "Yes" : "No",
+    lactating: plan.lactating ? "Yes" : "No",
+    GreenFodder: plan["Green Fodder (Hara Chara)"],
+    DryFodder: plan["Dry Fodder (Sookha Chara)"],
+    TotalMix: plan["Total Mix (Khal/Chokar Dana)"],
+    Water: plan.Water,
+    Ingredients: ingredientsText
+  };
+
+
+
+console.log("📤 Sending PDF Data:", pdfData);
+
+  // ✅ Send this pdfData instead
+  const response = await fetch("http://localhost:4000/generate-pdf", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(pdfData)  // <--- send pdfData not formData
+  });
+
+  if (!response.ok) {
+    alert("Error generating PDF");
+    return;
+  }
+// ✅ Put the blob download code here
+const blob = await response.blob();
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "feeding-plan.pdf";
+a.click();
+URL.revokeObjectURL(url);
+
+});
+
+
 // ---------- your original data (unchanged) ----------
 const MIXES = {
   grower:{
@@ -27,14 +93,14 @@ const MIXES = {
 };
 
 const LABELS = {
-  wheat_Bran: "Wheat Bran - Chokar",
-  crushed_maize: "Crushed Maize - Makai Dana",
-  cottonseed_cake: "Cottonseed Cake - Khal Binola",
-  rice_polish: "Rice Polish - Chawal Chokar",
-  oilseed_cake: "Oilseed Cake - Sarson Khal / Binola Khal",
-  chickpea_Broken: "Chickpea Broken - Chana Churi/  chaney ka dalia",
-  molasses: "Molasses - Sheera",
-  mineral_salt: "Mineral Mix + Namak"
+  wheat_Bran: "Gandum ka Chokar",
+  crushed_maize: "Tooti Hui Makai",
+  cottonseed_cake: "Banola Khal",
+  rice_polish: "Chawal ki Polish",
+  oilseed_cake: "Sarson ki Khal",
+  chickpea_Broken: "Chanay ka Toota",
+  molasses: "Sheera (Gur ka Ras)",
+  mineral_salt: "Madni Ajza + Namak"
 };
 
 const LARGE=["Beetal","Kamori","Dera Din Panah","DDP"];
@@ -125,7 +191,7 @@ function getFeedingPlan({breed, ageMonths, weight, purpose, sex, pregnant, lacta
 document.addEventListener("DOMContentLoaded", () => {
   const goatForm = document.getElementById("goatForm");
   if (!goatForm) {
-    console.error("goatForm not found in DOM. Make sure form has id='goatForm' or move script below the form.");
+    console.error("goatForm not found in DOM. Make sure form has id='goatForm'.");
     return;
   }
 
@@ -168,9 +234,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><b>Age:</b> ${plan.Age_Months} months</p>
           <p><b>Weight:</b> ${plan.Weight_Kg} kg</p>
           <p><b>Purpose:</b> ${plan.Purpose}</p>
-          <p><b>sex:</b> ${plan.sex}</p>
-          <p><b>pregnant:</b> ${plan.pregnant ? "Yes" : "No"}</p>
-          <p><b>lactating:</b> ${plan.lactating ? "Yes" : "No"}</p>
+          <p><b>Sex:</b> ${plan.sex}</p>
+          <p><b>Pregnant:</b> ${plan.pregnant ? "Yes" : "No"}</p>
+          <p><b>Lactating:</b> ${plan.lactating ? "Yes" : "No"}</p>
         </div>
 
         <div class="grid grid-cols-2 gap-4 text-center">
@@ -189,29 +255,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // ✅ update UI here
     const card = document.getElementById("planCard");
     const content = document.getElementById("planContent");
+    const downloadBtn = document.getElementById("downloadPdf");
+
     if (card) card.style.display = "block";
     if (content) content.innerHTML = html;
+    if (downloadBtn) downloadBtn.removeAttribute("hidden");
   });
 });
-// ---------- PDF Download ----------
-document.addEventListener("DOMContentLoaded",()=>{
-  const downloadBtn = document.getElementById("downloadPdf");
-  if (downloadBtn){
-    downloadBtn.addEventListener("click", ()=>{
-      const { jsPDF} = window.jspdf;
-      const doc= new jsPDF();
-      //Grab plan content (text only)
-      const content = document.getElementById("planContent")?.innerText|| "NO plan available";
-      doc.setFont("helvetica","normal");
-      doc.setFontSize(12);
-      //Title
-      doc.text("GoatCare Feeding Plan 🐐", 10, 10);
-      // Content
-      doc.text(content,10,20);
-      //Save
-      doc.save("goat-feeding-plan.pdf")
-    })
-  }
-})
+
+
+

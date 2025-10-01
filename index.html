@@ -11,8 +11,11 @@
 
   <title>GoatCare App</title>
   <!-- Page title shown in the browser tab -->
+
    <script src="https://cdn.tailwindcss.com"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 
 
 
@@ -115,7 +118,7 @@
           <div id="planContent" class="text-gray-700"></div>
 
               <!-- Download Button -->
-             <button id="downloadPdf" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">
+             <button id="downloadPdf" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4" hidden>
               📥 Download PDF
               </button>
 
@@ -126,9 +129,10 @@
     </section>
 
   </main>
-
+  
   <!-- Link to external JavaScript file -->
   <script src="index.js"></script>
+<!-- Link to external JavaScript file -->
 
 </body>
 </html>
