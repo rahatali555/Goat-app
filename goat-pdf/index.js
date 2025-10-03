@@ -1,48 +1,71 @@
 const express = require("express");
 const PuppeteerHTMLPDF = require("puppeteer-html-pdf");
-const hbs = require("handlebars");
+const handlebars = require("handlebars");
 const fs = require("fs");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-// ---------- Initialize App ----------
 const app = express();
-
-// ---------- Middleware ----------
 app.use(cors());
 app.use(bodyParser.json());
 
-// ---------- Puppeteer HTML to PDF Setup ----------
 const htmlPDF = new PuppeteerHTMLPDF();
 htmlPDF.setOptions({ format: "A4" });
 
-// ---------- PDF Generation Endpoint ----------
 app.post("/generate-pdf", async (req, res) => {
   try {
-    const pdfData = req.body;
-    console.log("📦 PDF DATA RECEIVED:", pdfData);
+    const data = req.body;
+    console.log("📥 Received Data:", data);   // ✅ LOG
 
-    // Read and compile the Handlebars template
-    const html = fs.readFileSync(__dirname + "/template.html", "utf8");
-    const template = hbs.compile(html);
-    const content = template(pdfData);
+    if (data.Age_Months <= 3) {
+      let milkLiters = (data.Weight_Kg / 5).toFixed(2);
+      data.Milk = `${milkLiters} liter/day (Maa ka doodh ya replacement milk)`;
+    } else {
+      data.Milk = null;
+    }
 
-    // Generate PDF buffer
-    const pdfBuffer = await htmlPDF.create(content);
+    const html = fs.readFileSync("template.html", "utf8");
+    const template = handlebars.compile(html);
+    const result = template(data);
 
-    // Send PDF as response
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": "attachment; filename=feeding-plan.pdf",
-    });
+    const pdfBuffer = await htmlPDF.create(result);
+
+    console.log("✅ PDF Generated with Milk:", data.Milk); // ✅ LOG
+
+    res.setHeader("Content-Type", "application/pdf");
     res.send(pdfBuffer);
   } catch (error) {
-    console.error("PDF Error:", error);
-    res.status(500).send("Error generating PDF");
+    console.error("❌ Error generating PDF:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
+// ---------- Feeding Plan API (for frontend display) ----------
+app.post("/feeding-plan", (req, res) => {
+  const data = req.body;
 
-// ---------- Start Server ----------
+  // Milk calculation
+  if (data.Age_Months <= 3) {
+    let milkLiters = (data.Weight_Kg / 5).toFixed(2);
+    data.Milk = `${milkLiters} liter/day (Maa ka doodh ya replacement milk)`;
+  } else {
+    data.Milk = "Not required (age > 3 months)";
+  }
+
+  // Water (2% body weight)
+  data.Water = (data.Weight_Kg * 0.02).toFixed(1) + " liter/day (Pani)";
+
+  // Fodder only for older goats
+  if (data.Age_Months > 1) {
+    data.GreenFodder = "200 g/day (Berseem, Lucerne, Jowar, Bajra)";
+    data.DryFodder = "100 g/day (Bhusa, Parali)";
+    data.TotalMix = "50 g/day (Khal/Chokar Dana)";
+  }
+
+  res.json(data);
+});
+
+
+
 app.listen(4000, () => {
   console.log("🚀 Server running at http://localhost:4000");
 });

@@ -38,28 +38,51 @@
   <!-- Goat Info -->
   <div class="section">
     <p><span class="label">Breed:</span> {{Breed}}</p>
-    <p><span class="label">Age (months):</span> {{Age_Months}}</p>
+   <p><span class="label">Age:</span> {{Age_Display}}</p>
     <p><span class="label">Weight (kg):</span> {{Weight_Kg}}</p>
     <p><span class="label">Purpose:</span> {{Purpose}}</p>
     <p><span class="label">Sex:</span> {{sex}}</p>
     <p><span class="label">Pregnant:</span> {{pregnant}}</p>
     <p><span class="label">Lactating:</span> {{lactating}}</p>
-    <p><span class="label">🥛 Milk:</span> {{Milk}}</p>
+ 
+    {{#if Milk}}
+  <p><span class="label">🥛 Milk:</span> {{Milk}}</p>
+  {{/if}}
 
   </div>
 
   <!-- Feeding Plan -->
-  <div class="section">
+<!-- ✅ Feeding Details -->
+<div class="section">
+  <h2>🥗 Feeding Plan</h2>
+
+  {{#if Milk}}
+    <p><span class="label">🍼 Milk:</span> {{Milk}}</p>
+  {{/if}}
+
+  {{#if GreenFodder}}
     <p><span class="label">🌿 Green Fodder:</span> {{GreenFodder}}</p>
+  {{/if}}
+
+  {{#if DryFodder}}
     <p><span class="label">🌾 Dry Fodder:</span> {{DryFodder}}</p>
+  {{/if}}
+
+  {{#if TotalMix}}
     <p><span class="label">🥣 Total Mix:</span> {{TotalMix}}</p>
-    <p><span class="label">💧 Water:</span> {{Water}}</p>
-  </div>
+  {{/if}}
+
+  <p><span class="label">💧 Water:</span> {{Water}}</p>
+</div>
 
   <!-- Ingredients -->
+<!-- ✅ Ingredients -->
+{{#if Ingredients}}
   <div class="section">
     <h3>⚖️ Ingredients</h3>
     <pre>{{Ingredients}}</pre>
   </div>
+{{/if}}
+
 </body>
 </html>
